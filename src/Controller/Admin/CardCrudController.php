@@ -8,9 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\Validator\Constraints\Image;
 
 class CardCrudController extends AbstractCrudController
 {
@@ -31,7 +29,7 @@ class CardCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnIndex()->hideOnForm(),
             ImageField::new('picture', 'Aperçu')
-                ->setBasePath('/kanazawa/public/images/cards')
+                ->setBasePath('images/cards')
                 ->setUploadDir('public\images\cards'),
             TextField::new('picture', 'Nom')->hideOnForm(),
             NumberField::new('number', 'Numéro'),
