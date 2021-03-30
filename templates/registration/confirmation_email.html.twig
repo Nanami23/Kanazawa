@@ -1,0 +1,19 @@
+<img src="{{ asset('images/logo2.png') }}" alt="Logo Kanazawa">
+<h1>Veuillez confirmer votre adresse e-mail !</h1>
+
+<p>
+    Nous vous remercions de votre inscription sur Kanazawa !<br>
+    Afin de la finir, veuillez confirmer votre adresse e-mail en cliquant sur le bouton ci-dessous.<br><br>
+    <a href="{{ signedUrl|raw }}">Confirmer mon adresse e-mail</a><br><br>
+    Si cela ne fonctionne pas, vous pouvez également utilisé ce lien :<br>
+    <a href="{{ signedUrl|raw }}">{{ signedUrl|raw }}</a><br><br>
+    Ce lien expirera dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }} après l'envoi.
+</p>
+
+<p>
+    Amusez-vous bien sur Kanazawa !
+</p>
+
+<p>
+    Copyright © Beyond Memories. Tous droits réservés.
+</p>
