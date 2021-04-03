@@ -34,6 +34,7 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+        dump($form);
         if(!empty($form['recaptcha-response'])){
             $url = 'https://www.google.com/recaptcha/api/siteverify?secret=6LdXo5gaAAAAAAlw1cNLKcsIxOkfrq9xu8IGvWVB&response='.$form['recaptcha-response'];
 
