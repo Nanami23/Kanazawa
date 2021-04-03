@@ -50,7 +50,7 @@ class RegistrationController extends AbstractController
 
             if (!empty($response) || !is_null($response)){
                 $data = json_decode($response);
-                if ($data->success){
+                if ($data==1){
                     if ($form->isSubmitted() && $form->isValid()) {
                         // donner le role joueur
                         $user->setRoles(["ROLE_JOUEUR"]);
