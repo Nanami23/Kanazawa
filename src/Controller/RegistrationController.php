@@ -35,7 +35,6 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if(!empty($form['recaptcha-response'])){
-            dump($form);
             $url = 'https://www.google.com/recaptcha/api/siteverify?secret=6LdXo5gaAAAAAAlw1cNLKcsIxOkfrq9xu8IGvWVB&response='.$form['recaptcha-response'];
 
             if (function_exists('curl_version')){
