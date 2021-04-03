@@ -34,45 +34,66 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // donner le role joueur
-            $user->setRoles(["ROLE_JOUEUR"]);
+        if(!empty($form['recaptcha-response'])){
+            dump($form);
+            $url = 'https://www.google.com/recaptcha/api/siteverify?secret=6LdXo5gaAAAAAAlw1cNLKcsIxOkfrq9xu8IGvWVB&response='.$form['recaptcha-response'];
 
-            // upload file
-            if ($form['avatar']->getData()!=null) {
-                $file = $form['avatar']->getData();
-                $file->move($this->getParameter('avatar_direct'), $file->getClientOriginalName());
-                $user->setAvatar($file->getClientOriginalName());
+            if (function_exists('curl_version')){
+                $curl = curl_init($url);
+                curl_setopt($curl, CURLOPT_HEADER, false);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);
+                curl_setopt($curl, CURLOPT_TIMEOUT, 1);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+                $response = curl_exec($curl);
+            } else {
+                $response= file_get_contents($url);
             }
 
-            // encode the plain password
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
+            if (!empty($response) || !is_null($response)){
+                $data = json_decode($response);
+                if ($data->success){
+                    if ($form->isSubmitted() && $form->isValid()) {
+                        // donner le role joueur
+                        $user->setRoles(["ROLE_JOUEUR"]);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+                        // upload file
+                        if ($form['avatar']->getData()!=null) {
+                            $file = $form['avatar']->getData();
+                            $file->move($this->getParameter('avatar_direct'), $file->getClientOriginalName());
+                            $user->setAvatar($file->getClientOriginalName());
+                        }
 
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('contact@beyondmemories.fr', 'Kanazawa | Beyond Memories'))
-                    ->to($user->getEmail())
-                    ->subject('Veuillez confirmer votre adresse e-mail')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
-            // do anything else you need here, like send an email
+                        // encode the plain password
+                        $user->setPassword(
+                            $passwordEncoder->encodePassword(
+                                $user,
+                                $form->get('plainPassword')->getData()
+                            )
+                        );
 
-            return $guardHandler->authenticateUserAndHandleSuccess(
-                $user,
-                $request,
-                $authenticator,
-                'main' // firewall name in security.yaml
-            );
+                        $entityManager = $this->getDoctrine()->getManager();
+                        $entityManager->persist($user);
+                        $entityManager->flush();
+
+                        // generate a signed url and email it to the user
+                        $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+                            (new TemplatedEmail())
+                                ->from(new Address('contact@beyondmemories.fr', 'Kanazawa | Beyond Memories'))
+                                ->to($user->getEmail())
+                                ->subject('Veuillez confirmer votre adresse e-mail')
+                                ->htmlTemplate('registration/confirmation_email.html.twig')
+                        );
+                        // do anything else you need here, like send an email
+
+                        return $guardHandler->authenticateUserAndHandleSuccess(
+                            $user,
+                            $request,
+                            $authenticator,
+                            'main' // firewall name in security.yaml
+                        );
+                    }
+                }
+            }
         }
 
         return $this->render('registration/register.html.twig', [

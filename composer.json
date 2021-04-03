@@ -6,12 +6,15 @@
     "require": {
         "php": ">=7.2.5",
         "ext-ctype": "*",
+        "ext-curl": "^7.4",
         "ext-iconv": "*",
+        "ext-json": "^7.4",
         "composer/package-versions-deprecated": "1.11.99.1",
         "doctrine/doctrine-bundle": "^2.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.8",
         "easycorp/easyadmin-bundle": "^3.2",
+        "google/recaptcha": "^1.2",
         "sensio/framework-extra-bundle": "^6.1",
         "symfony/asset": "5.2.*",
         "symfony/console": "5.2.*",
@@ -25,6 +28,7 @@
         "symfony/twig-bundle": "5.2.*",
         "symfony/validator": "5.2.*",
         "symfony/yaml": "5.2.*",
+        "symfonycasts/verify-email-bundle": "^1.2",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
     },
@@ -76,7 +80,7 @@
         "symfony/maker-bundle": "^1.29",
         "symfony/monolog-bundle": "^3.0",
         "symfony/stopwatch": "^5.2",
-        "symfony/var-dumper": "^5.2",
+        "symfony/var-dumper": "5.2.*",
         "symfony/web-profiler-bundle": "^5.2"
     }
 }
