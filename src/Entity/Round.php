@@ -29,6 +29,7 @@ class Round
 
     /**
      * @ORM\ManyToOne(targetEntity=Game::class, inversedBy="sets")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $game;
 

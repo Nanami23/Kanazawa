@@ -6,4 +6,17 @@
     <h1>Bonjour {{ user.firstName }}</h1>
     <p>Vos informations, vos parties...</p>
     <a href="{{ path('new_game') }}">Nouvelle Partie</a>
+    <div>
+        <h2>Parties en cours</h2>
+        {% for numbers in games %}
+            {% if games != null %}
+                {% for game in numbers %}
+                    <div style="margin-bottom: 10px;">
+                        <a href="{{ path('show_game', {'game': game.id}) }}">Continuer la partie</a>
+                        <a href="{{ path('user_delete_partie', {'game': game.id}) }}">Supprimer la partie</a>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}
