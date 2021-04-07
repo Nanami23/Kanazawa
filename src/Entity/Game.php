@@ -49,6 +49,11 @@ class Game
      */
     private $sets;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $player;
+
     public function __construct()
     {
         $this->sets = new ArrayCollection();
@@ -145,6 +150,18 @@ class Game
                 $set->setGame(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPlayer(): ?int
+    {
+        return $this->player;
+    }
+
+    public function setPlayer(int $player): self
+    {
+        $this->player = $player;
 
         return $this;
     }
