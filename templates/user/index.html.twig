@@ -3,20 +3,44 @@
 {% block title %}Mon profil : {{ user.firstName }}{% endblock %}
 
 {% block body %}
+    {% if user.avatar != null %}
+        <img id="avatar" src="{{ asset('images/avatars/') }}{{ user.avatar }}" alt="avatar_{{ user.avatar }}">
+    {% endif %}
     <h1>Bonjour {{ user.firstName }}</h1>
     <p>Vos informations, vos parties...</p>
     <a href="{{ path('new_game') }}">Nouvelle Partie</a>
     <div>
         <h2>Parties en cours</h2>
-        {% for numbers in games %}
-            {% if games != null %}
-                {% for game in numbers %}
-                    <div style="margin-bottom: 10px;">
-                        <a href="{{ path('show_game', {'game': game.id}) }}">Continuer la partie</a>
-                        <a href="{{ path('user_delete_partie', {'game': game.id}) }}">Supprimer la partie</a>
+        {% if gamescours[0]==null and gamescours[1]==null %}
+            <p>Pas de parties en cours</p>
+        {% else %}
+            {% for numberscours in gamescours %}
+                {% for gamecours in numberscours %}
+                    <div style="margin-bottom: 10px; border: 2px solid #000;">
+                        <p>Adversaire : {% if gamecours.user1.id == user.id %}{{ gamecours.user2.firstName }}{% else %}{{ gamecours.user1.firstName }}{% endif %}</p>
+                        <a href="{{ path('show_game', {'game': gamecours.id}) }}">Continuer la partie</a>
+                        <a href="{{ path('user_delete_partie', {'game': gamecours.id}) }}">Supprimer la partie</a>
                     </div>
                 {% endfor %}
-            {% endif %}
-        {% endfor %}
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div>
+        <h2>Parties terminées</h2>
+        {% if gamesfinis[0]==null and gamesfinis[1]==null %}
+            <p>Pas de parties terminées</p>
+        {% else %}
+            {% for numbersfinis in gamesfinis %}
+                {% for gamefinis in numbersfinis %}
+                    {% if gamefinis.ended != null %}
+                        <div style="margin-bottom: 10px; border: 2px solid #000;">
+                            <p>Adversaire : {% if gamefinis.user1.id == user.id %}{{ gamefinis.user2.firstName }}{% else %}{{ gamefinis.user1.firstName }}{% endif %}</p>
+                        </div>
+                    {% else %}
+                        <p>Pas de parties terminées</p>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
     </div>
 {% endblock %}

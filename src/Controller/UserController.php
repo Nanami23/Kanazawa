@@ -20,11 +20,14 @@ class UserController extends AbstractController
      */
     public function index(GameRepository $gameRepository): Response
     {
-        $games[]=$gameRepository->findBy(['user1' => $this->getUser()->getId(), 'ended' => null], ['created' => 'DESC']);
-        $games[]=$gameRepository->findBy(['user2' => $this->getUser()->getId(), 'ended' => null], ['created' => 'DESC']);
+        $gamesCours[]=$gameRepository->findBy(['user1' => $this->getUser()->getId(), 'ended' => null], ['created' => 'DESC']);
+        $gamesCours[]=$gameRepository->findBy(['user2' => $this->getUser()->getId(), 'ended' => null], ['created' => 'DESC']);
+        $gamesFinis[]=$gameRepository->findBy(['user1' => $this->getUser()->getId()], ['created' => 'DESC']);
+        $gamesFinis[]=$gameRepository->findBy(['user2' => $this->getUser()->getId()], ['created' => 'DESC']);
         return $this->render('user/index.html.twig', [
             'user' => $this->getUser(),
-            'games' => $games
+            'gamescours' => $gamesCours,
+            'gamesfinis' => $gamesFinis
         ]);
     }
 
