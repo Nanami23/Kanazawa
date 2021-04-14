@@ -48,8 +48,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
+            ->add('pseudo', TextType::class)
             ->add('birthday', DateType::class)
             ->add('avatar', FileType::class, [
                 'required' => false,

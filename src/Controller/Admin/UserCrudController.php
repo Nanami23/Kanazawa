@@ -6,9 +6,11 @@ use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class UserCrudController extends AbstractCrudController
@@ -33,10 +35,11 @@ class UserCrudController extends AbstractCrudController
                 ->setBasePath('images/avatars')
                 ->setUploadDir('public\images\avatars'),
             EmailField::new('email', 'Adresse e-mail'),
+            TextField::new('pseudo', 'Pseudonyme'),
             TextField::new('password', 'Mot de passe')->onlyWhenCreating(),
-            TextField::new('firstname', 'Prénom'),
-            TextField::new('lastname', 'Nom'),
-            DateField::new('birthday', 'Date d\'anniversaire')
+            DateField::new('birthday', 'Date d\'anniversaire'),
+            DateTimeField::new('createdAt', 'Date de création'),
+            IntegerField::new('isVerified', 'Compte vérifié')
         ];
     }
 }

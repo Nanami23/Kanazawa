@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon profil : {{ user.firstName }}{% endblock %}
+{% block title %}Mon profil : {{ user.pseudo }}{% endblock %}
 
 {% block body %}
     {% if user.avatar != null %}
         <img id="avatar" src="{{ asset('images/avatars/') }}{{ user.avatar }}" alt="avatar_{{ user.avatar }}">
     {% endif %}
-    <h1>Bonjour {{ user.firstName }}</h1>
+    <h1>Bonjour {{ user.pseudo }}</h1>
     <p>Vos informations, vos parties...</p>
     <a href="{{ path('new_game') }}">Nouvelle Partie</a>
     <div>
@@ -17,7 +17,7 @@
             {% for numberscours in gamescours %}
                 {% for gamecours in numberscours %}
                     <div style="margin-bottom: 10px; border: 2px solid #000;">
-                        <p>Adversaire : {% if gamecours.user1.id == user.id %}{{ gamecours.user2.firstName }}{% else %}{{ gamecours.user1.firstName }}{% endif %}</p>
+                        <p>Adversaire : {% if gamecours.user1.id == user.id %}{{ gamecours.user2.pseudo }}{% else %}{{ gamecours.user1.pseudo }}{% endif %}</p>
                         <a href="{{ path('show_game', {'game': gamecours.id}) }}">Continuer la partie</a>
                         <a href="{{ path('user_delete_partie', {'game': gamecours.id}) }}">Supprimer la partie</a>
                     </div>

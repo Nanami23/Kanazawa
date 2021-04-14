@@ -11,11 +11,8 @@
 
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.avatar) }}
-        {{ form_row(registrationForm.firstname, {
-            label: 'Prénom'
-        }) }}
-        {{ form_row(registrationForm.lastname, {
-            label: 'Nom'
+        {{ form_row(registrationForm.pseudo, {
+            label: 'Pseudo'
         }) }}
         {{ form_row(registrationForm.birthday, {
             label: 'Date de naissance'

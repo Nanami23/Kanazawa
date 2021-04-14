@@ -29,6 +29,11 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $pseudo;
+
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -38,16 +43,6 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
-
-    /**
-     * @ORM\Column(type="string", length=30)
-     */
-    private $firstname;
-
-    /**
-     * @ORM\Column(type="string", length=30)
-     */
-    private $lastname;
 
     /**
      * @ORM\Column(type="date")
@@ -79,6 +74,11 @@ class User implements UserInterface
      */
     private $isVerified = false;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
     public function __construct()
     {
         $this->games1 = new ArrayCollection();
@@ -103,6 +103,18 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
     /**
      * A visual identifier that represents this user.
      *
@@ -110,7 +122,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->pseudo;
     }
 
     /**
@@ -165,30 +177,6 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstname;
-    }
-
-    public function setFirstName(string $firstname): self
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastname;
-    }
-
-    public function setLastName(string $lastname): self
-    {
-        $this->lastname = $lastname;
-
-        return $this;
     }
 
     public function getBirthday(): ?\DateTimeInterface
@@ -295,7 +283,7 @@ class User implements UserInterface
 
     public function display()
     {
-        return $this->firstname.' '.$this->lastname;
+        return $this->pseudo;
     }
 
     public function getAvatar(): ?string
@@ -318,6 +306,18 @@ class User implements UserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
