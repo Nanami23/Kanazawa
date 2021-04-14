@@ -52,6 +52,17 @@ header .navbar-brand img{
 }
 
 
+#avatar{
+    max-width: 100%;
+    max-height: 100px;
+}
+
+
+#persos img{
+    width: 10%;
+}
+
+
 .btn{
     color: #fff;
     background-color: #9B1B1B;
