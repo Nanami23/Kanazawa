@@ -54,6 +54,7 @@ class RegistrationController extends AbstractController
                     if ($form->isSubmitted() && $form->isValid()) {
                         // donner le role joueur
                         $user->setRoles(["ROLE_JOUEUR"]);
+                        $user->setCreatedAt(new \DateTime('now'));
 
                         // upload file
                         if ($form['avatar']->getData()!=null) {
