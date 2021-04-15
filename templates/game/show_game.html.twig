@@ -3,42 +3,153 @@
 {% block title %}Partie contre ... en cours{% endblock %}
 
 {% block body %}
-
-    <div class="row">
-        <div class="col-8">
-            Cartes de l'adversaire
-            {% for card in set.user2HandCards %}
-                <img src="{{ asset('images/cards/'~cards[card].picture) }}">{{ cards[card].number }}
-            {% endfor %}
-        </div>
-        <div class="col-4">
-            Actions
-        </div>
-    </div>
-    <div class="row">
-        Plateau adversaire
-    </div>
-    <div class="row">
-        Plateau
-    </div>
-    <div class="row">
-        Mon Plateau
-    </div>
-    <div class="row">
-        <div class="col-8">
-            {% for card in set.user1HandCards %}
-                <img src="{{ asset('images/cards/'~cards[card].picture) }}">{{ cards[card].number }}
-            {% endfor %}
-        </div>
-        <div class="col-4">
-            Mes Actions
-        </div>
+    <div id="plateau">
+        {{ render(controller('App\\Controller\\GameController::refreshPlateauGame', {game:game.id})) }}
     </div>
 
-
-
+    <div id="message">...</div>
 {% endblock %}
 
-{% block title %}
+{% block javascripts %}
+    <script>
+        let boucle
+        $(document).ready(function (){
+            boucle = setInterval(refreshGame, 3000)
+        })
+        $(document).on('click', '#finDeTour', function() {
+            $('#finDeTour').hide()
+            $('#sur').show()
+            $(document).on('click', '#oui', function (){
+                var event = 'clicked'
+                $.ajax({
+                    url: "{{ path('change_tour', {game: game.id}) }}",
+                    data: 'event='+event,
+                    method: 'POST',
+                    success: function(data){
+                        if (data == true){
+                            $('.action').attr('disabled', 'disabled');
+                            $('#sur').hide()
+                            $('#finDeTour').show().attr('disabled', 'disabled')
+                            boucle = setInterval(refreshGame, 3000)
+                        }
+                    },
+                    error: function(){
+                        console.log('Il y a un problème')
+                    }
+                })
+            })
+            $(document).on('click', '#non', function (){
+                $('#finDeTour').show()
+                $('#sur').hide()
+            })
+        })
 
+        function refreshGame() {
+            $.ajax({
+                url: "{{ path('get_tour', {game: game.id}) }}",
+                success: function(data) {
+                    console.log(data)
+                    if (data == false) {
+                        $('#message').html('Tour de votre adversaire')
+                    } else {
+                        $('#message').html('C\'est mon tour...')
+                        //mettre à jour le plateau, dès que je récupère true
+                        clearInterval(boucle)
+                    }
+                    if ($('#message').html() == 'Tour de votre adversaire'){
+                        $('.action').attr('disabled', 'disabled')
+                        $('#finDeTour').show().attr('disabled', 'disabled')
+                    } else if ($('#message').html() == 'C\'est mon tour...'){
+                        $('.action').attr('enabled', 'enabled')
+                        $('#finDeTour').show().attr('enabled', 'enabled')
+                    }
+                },
+                error: function(){
+                }
+            })
+        }
+
+        let action
+        $(document).on('click', '#secret', function(){
+            console.log('secret')
+            action = 'secret' //mémorise l'action en cours
+            $('.choixSecret').show()
+            $('#valider').show()
+        })
+        $(document).on('click', '#depot', function(){
+            console.log('depot')
+            action = 'depot'
+            $('.choixDepot').show()
+            $('#valider').show()
+
+            var cb = document.querySelectorAll("[type=checkbox]");
+            var i = 0,
+                l = cb.length;
+            for (; i<l; i++){
+                cb[i].addEventListener("change", function (){
+                    if (document.querySelectorAll(":checked").length > 2) {
+                        this.checked = false;
+                    }
+                }, false);
+            }
+        })
+        $(document).on('click', '#offre', function(){
+            console.log('offre')
+            action = 'offre'
+            /*$('.choixDepot').show()
+            $('#valider').show()*/
+        })
+        $(document).on('click', '#echange', function(){
+            console.log('echange')
+            action = 'echange'
+            /*$('.choixDepot').show()
+            $('#valider').show()*/
+        })
+        $(document).on('click', '#valider', function(){
+            $('#valider').hide()
+            switch (action) {
+                case 'secret':
+                    donneesAction = {
+                        action: 'secret',
+                        carte: $('input[name="carte_secret"]:checked').val()
+                    }
+                    break;
+                case 'depot':
+                    var depot = []
+                    $.each($('input[name="carte_depot"]:checked'), function (){
+                        depot.push($(this).val())
+                    })
+                    donneesAction = {
+                        action: 'depot',
+                        carte1: depot[0],
+                        carte2: depot[1]
+                    }
+                    break;
+                /*case 'offre':
+                    donneesAction = {
+                        action: 'offre',
+                        carte: $('input[name="carte_secret"]:checked').val()
+                    }
+                    break;
+                case 'echange':
+                    donneesAction = {
+                        action: 'echange',
+                        carte: $('input[name="carte_secret"]:checked').val()
+                    }
+                    break;*/
+            }
+            $.ajax({
+                url: "{{ path('action_game', {game: game.id}) }}",
+                data: donneesAction,
+                method: 'POST',
+                success: function(data) {
+                    if (data == true) {
+                        $('#plateau').load("{{ path('refresh_plateau_game', {game:game.id}) }}")
+                    }
+                },
+                error: function(){
+                }
+            })
+        })
+    </script>
 {% endblock %}

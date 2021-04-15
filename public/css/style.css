@@ -58,8 +58,25 @@ header .navbar-brand img{
 }
 
 
+#actionsAdv img{
+    width: 60px;
+}
+
 #persos img{
     width: 10%;
+}
+
+#cartesmoi img{
+    width: 10%;
+}
+
+#actions .action{
+    border: none;
+    background: transparent;
+}
+
+#actions .action img{
+    width: 60px;
 }
 
 

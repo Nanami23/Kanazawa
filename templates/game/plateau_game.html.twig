@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-8">
+        Cartes de l'adversaire
+        {% for card in adversaire.handCards %}
+            <span style="margin:3px; padding:5px">
+
+            </span>
+        {% endfor %}
+    </div>
+    <div class="col-4" id="actionsAdv">
+        Actions de l'adversaire
+        <img src="{{ asset('images/jetons/secret_rouge.png') }}" />
+        <img src="{{ asset('images/jetons/depot_rouge.png') }}" />
+        <img src="{{ asset('images/jetons/offre_rouge.png') }}" />
+        <img src="{{ asset('images/jetons/echange_rouge.png') }}" />
+    </div>
+</div>
+<div class="row">
+    Plateau adversaire
+</div>
+<div class="row d-flex" id="persos">
+    {% for i in 7..1 %}
+        <img src="{{ asset('images/cards/perso'~i~'.png') }}" alt="perso{{ i }}">
+    {% endfor %}
+</div>
+<div class="row">
+    Mon Plateau
+</div>
+<div class="row">
+    <div class="col-8" id="cartesmoi">
+        Mes cartes
+        {% for card in moi.handCards %}
+            <span style="margin:3px; padding:5px">
+                <img src="{{ asset('images/cards/'~cards[card].picture) }}">
+                <input type="radio" name="carte_secret" value="{{ card }}" style="display: none;" class="choixSecret">
+                <input type="checkbox" name="carte_depot" value="{{ card }}" style="display: none;" class="choixDepot">
+            </span>
+        {% endfor %}
+    </div>
+    <div class="col-4" id="actions">
+        Mes Actions
+        <button id="secret" class="action"><img src="{{ asset('images/jetons/secret_rouge.png') }}" /></button>
+        <button id="depot" class="action"><img src="{{ asset('images/jetons/depot_rouge.png') }}" /></button>
+        <button id="offre" class="action"><img src="{{ asset('images/jetons/offre_rouge.png') }}" /></button>
+        <button id="echange" class="action"><img src="{{ asset('images/jetons/echange_rouge.png') }}" /></button><br>
+        <button id="valider" style="display: none">Valider</button>
+        <button id="finDeTour">Fin du tour</button>
+        <div id="sur" style="display: none;">
+            <p>Êtes-vous sûr de vouloir mettre fin à votre tour ?</p>
+            <button id="oui">Oui</button>
+            <button id="non">Non</button>
+        </div>
+    </div>
+</div>

@@ -3,22 +3,36 @@
 {% block title %}Nouvelle partie{% endblock %}
 
 {% block body %}
-    <form action="{{ path('create_game') }}" method="post">
-        <div>
-            Moi
-        </div>
-
-        <div>
-            <label for="user2">Contre :</label>
-            <select name="user2" id="user2">
-                <option value="">Choisir le joueur 2</option>
-                {% for user in users|filter(user => user.id != app.user.id) %}
-                    <option value="{{ user.id }}">{{ user.display }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <button type="submit">Commencer la partie</button>
-
-    </form>
+    <h1>Nouvelle partie</h1>
+    <div>
+        <h2>Ouvrir une table de jeu publique</h2>
+        <a href="{{ path('create_game') }}">Ouvrir une partie</a>
+    </div>
+    <div>
+        <h2>Rejoindre une table de jeu publique</h2>
+        {% if games != null %}
+            {% for numbers in games %}
+                <div>
+                    <a href="{{ path('show_game', {'game': numbers.id}) }}">Rejoindre la partie</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Il n'y a pas de table de jeu publique.</p>
+        {% endif %}
+    </div>
+    <div>
+        <h2>Choisissez votre adversaire</h2>
+        <form action="{{ path('create_game') }}" method="post">
+            <div>
+                <label for="user2">Contre :</label>
+                <select name="user2" id="user2">
+                    <option value="">Choisir le joueur 2</option>
+                    {% for user in users|filter(user => user.id != app.user.id) %}
+                        <option value="{{ user.id }}">{{ user.display }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit">Commencer la partie</button>
+        </form>
+    </div>
 {% endblock %}
