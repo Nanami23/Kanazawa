@@ -27,7 +27,6 @@ class GameController extends AbstractController
     ): Response {
         $users = $userRepository->findAll();
         $games = $gameRepository->findBy(['public' => 1, 'ended' => null], ['created' => 'DESC']);
-        dump($games);
         return $this->render('game/index.html.twig', [
             'users' => $users,
             'games' => $games
